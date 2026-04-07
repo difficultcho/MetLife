@@ -20,7 +20,7 @@ jobs:
         run: docker build -t metlife-server:latest ./server
 
       - name: Save image to tar
-        run: docker save metlife-server:latest | gzip > /tmp/metlife-server.tar.gz
+        run: docker save metlife-server:latest | gzip > metlife-server.tar.gz
 
       - name: Upload image to server
         uses: appleboy/scp-action@v0.1.7
@@ -28,9 +28,8 @@ jobs:
           host: bce.kkmsee.com
           username: ${{ secrets.CVM_USERNAME }}
           key: ${{ secrets.CVM_SSH_KEY }}
-          source: /tmp/metlife-server.tar.gz
+          source: metlife-server.tar.gz
           target: /opt/metlife
-          strip_components: 1
 
       - name: Upload compose and env files
         uses: appleboy/scp-action@v0.1.7
