@@ -18,6 +18,12 @@ App({
   },
 
   login() {
+    // 开发环境使用模拟 openid
+    if (__wxConfig.envVersion === 'develop') {
+      this.globalData.openid = 'dev_test_openid'
+      return
+    }
+
     wx.login({
       success: (res) => {
         wx.request({
