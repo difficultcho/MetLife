@@ -16,31 +16,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t metlife-server:latest ./server
-
-      - name: Save image to tar
-        run: docker save metlife-server:latest | gzip > metlife-server.tar.gz
-
-      - name: Upload image to server
+      - name: Upload files to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: bce.kkmsee.com
           username: ${{ secrets.CVM_USERNAME }}
           key: ${{ secrets.CVM_SSH_KEY }}
-          source: metlife-server.tar.gz
+          source: "server/,docker-compose.yml"
           target: /opt/metlife
 
-      - name: Upload compose and env files
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: bce.kkmsee.com
-          username: ${{ secrets.CVM_USERNAME }}
-          key: ${{ secrets.CVM_SSH_KEY }}
-          source: "server/.env.example,server/static,docker-compose.yml"
-          target: /opt/metlife
-
-      - name: Load image and start
+      - name: Build and start
         uses: appleboy/ssh-action@v1
         with:
           host: bce.kkmsee.com
@@ -49,16 +34,12 @@ jobs:
           script: |
             cd /opt/metlife
 
-            # 加载镜像
-            docker load < metlife-server.tar.gz
-            rm -f metlife-server.tar.gz
-
             # 首次部署：创建 .env
             if [ ! -f server/.env ]; then
               cp server/.env.example server/.env
               echo "⚠️ 请手动编辑 /opt/metlife/server/.env 填入实际配置"
             fi
 
-            # 启动（使用已加载的镜像，不需要 build）
-            docker compose up -d server
+            # 构建并启动（基础镜像已预加载，全部走本地缓存）
+            docker compose up -d --build server
             docker image prune -f

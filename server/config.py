@@ -14,5 +14,5 @@ DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB
 WX_APPID = os.getenv("WX_APPID", "")
 WX_SECRET = os.getenv("WX_SECRET", "")
 
-API_PREFIX = os.getenv("API_PREFIX", "/metlife/api")
-STATIC_PREFIX = os.getenv("STATIC_PREFIX", "/metlife/static")
+API_PREFIX = os.getenv("API_PREFIX", "")
+STATIC_PREFIX = os.getenv("STATIC_PREFIX", "/static")
