@@ -1,0 +1,51 @@
+<!--index.wxml-->
+<view class="page">
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 商品双列列表 -->
+  <view wx:else class="product-grid">
+    <view
+      class="product-card"
+      wx:for="{{products}}"
+      wx:key="id"
+      data-product="{{item}}"
+      bindtap="onProductTap"
+    >
+      <image class="product-image" src="{{item.image_url}}" mode="aspectFill" />
+      <view class="product-name">{{item.name}}</view>
+    </view>
+  </view>
+
+  <!-- 确认选择弹窗 -->
+  <view class="modal-mask" wx:if="{{showConfirm}}" bindtap="onCancelConfirm">
+    <view class="modal-content" catchtap>
+      <view class="modal-title">确认选择</view>
+      <view class="modal-body">
+        <image class="modal-image" src="{{selectedProduct.image_url}}" mode="aspectFit" />
+        <text class="modal-product-name">{{selectedProduct.name}}</text>
+        <text class="modal-desc" wx:if="{{selectedProduct.description}}">{{selectedProduct.description}}</text>
+      </view>
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="onCancelConfirm">取消</button>
+        <button class="btn-confirm" bindtap="onConfirmSelect">确认选择</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 授权弹窗 -->
+  <view class="modal-mask" wx:if="{{showAuth}}" bindtap="onCancelConfirm">
+    <view class="modal-content" catchtap>
+      <view class="modal-title">授权信息</view>
+      <view class="modal-body">
+        <text class="auth-tip">请授权手机号以完成提交</text>
+      </view>
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="onCancelConfirm">取消</button>
+        <button class="btn-confirm btn-phone" open-type="getPhoneNumber" bindgetphonenumber="onGetPhoneNumber">授权手机号</button>
+      </view>
+    </view>
+  </view>
+</view>

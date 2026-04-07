@@ -1,0 +1,133 @@
+.page {
+  padding: 20rpx;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  color: #999;
+  font-size: 30rpx;
+}
+
+/* 双列商品网格 */
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.product-card {
+  width: 48%;
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.product-image {
+  width: 100%;
+  height: 340rpx;
+}
+
+.product-name {
+  padding: 16rpx 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 弹窗遮罩 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  width: 80%;
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: bold;
+  padding: 30rpx;
+  color: #333;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 40rpx 30rpx;
+}
+
+.modal-image {
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.modal-product-name {
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.modal-desc {
+  font-size: 26rpx;
+  color: #999;
+  text-align: center;
+}
+
+.auth-tip {
+  font-size: 28rpx;
+  color: #666;
+  padding: 20rpx 0;
+}
+
+.modal-footer {
+  display: flex;
+  border-top: 1rpx solid #eee;
+}
+
+.modal-footer button {
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  font-size: 30rpx;
+  padding: 24rpx 0;
+  background: #fff;
+  line-height: 1.5;
+}
+
+.modal-footer button::after {
+  border: none;
+}
+
+.btn-cancel {
+  color: #999;
+  border-right: 1rpx solid #eee !important;
+}
+
+.btn-confirm {
+  color: #1a73e8;
+  font-weight: bold;
+}
