@@ -1,6 +1,14 @@
+const envConfig = {
+  develop: { api: 'http://127.0.0.1:8001/metlife/api', static: 'http://127.0.0.1:8001/metlife/static' },
+  trial: { api: 'https://bce.kkmsee.com/metlife/api', static: 'https://bce.kkmsee.com/metlife/static' },
+  release: { api: 'https://bce.kkmsee.com/metlife/api', static: 'https://bce.kkmsee.com/metlife/static' },
+}
+const env = envConfig[__wxConfig.envVersion] || envConfig.release
+
 App({
   globalData: {
-    baseUrl: 'https://bce.kkmsee.com/metlife/api',
+    baseUrl: env.api,
+    staticUrl: env.static,
     openid: '',
     sessionKey: ''
   },

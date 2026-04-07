@@ -18,8 +18,8 @@ jobs:
         uses: appleboy/ssh-action@v1
         with:
           host: bce.kkmsee.com
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          username: ${{ secrets.CVM_USERNAME }}
+          key: ${{ secrets.CVM_SSH_KEY }}
           script: |
             cd /opt/metlife
             git pull origin main

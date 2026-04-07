@@ -17,7 +17,11 @@ Page({
     wx.request({
       url: `${app.globalData.baseUrl}/products`,
       success: (res) => {
-        this.setData({ products: res.data, loading: false })
+        const products = res.data.map(p => ({
+          ...p,
+          image_url: `${app.globalData.staticUrl}/${p.image}`
+        }))
+        this.setData({ products, loading: false })
       },
       fail: () => {
         wx.showToast({ title: '加载失败', icon: 'error' })
