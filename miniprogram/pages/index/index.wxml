@@ -30,21 +30,7 @@
       </view>
       <view class="modal-footer">
         <button class="btn-cancel" bindtap="onCancelConfirm">取消</button>
-        <button class="btn-confirm" bindtap="onConfirmSelect">确认选择</button>
-      </view>
-    </view>
-  </view>
-
-  <!-- 授权弹窗 -->
-  <view class="modal-mask" wx:if="{{showAuth}}" bindtap="onCancelConfirm">
-    <view class="modal-content" catchtap>
-      <view class="modal-title">授权信息</view>
-      <view class="modal-body">
-        <text class="auth-tip">请授权手机号以完成提交</text>
-      </view>
-      <view class="modal-footer">
-        <button class="btn-cancel" bindtap="onCancelConfirm">取消</button>
-        <button class="btn-confirm btn-phone" open-type="getPhoneNumber" bindgetphonenumber="onGetPhoneNumber">授权手机号</button>
+        <button class="btn-confirm" open-type="getPhoneNumber" bindgetphonenumber="onGetPhoneNumber">确认选择</button>
       </view>
     </view>
   </view>

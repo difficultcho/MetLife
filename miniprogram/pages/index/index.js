@@ -41,14 +41,7 @@ Page({
     this.setData({ showConfirm: false, selectedProduct: null })
   },
 
-  // 确认选择 → 获取手机号（需要 button 触发）
-  onConfirmSelect() {
-    this.setData({ showConfirm: false })
-    // 确认后展示授权按钮弹窗
-    this.setData({ showAuth: true })
-  },
-
-  // 获取手机号回调
+  // 获取手机号回调（确认选择按钮触发）
   onGetPhoneNumber(e) {
     if (e.detail.errMsg !== 'getPhoneNumber:ok') {
       wx.showToast({ title: '需要授权手机号', icon: 'none' })
@@ -56,25 +49,15 @@ Page({
     }
 
     const phoneCode = e.detail.code
-    this.setData({ showAuth: false })
-
-    // 获取用户昵称
-    wx.getUserProfile({
-      desc: '用于记录您的选择',
-      success: (profileRes) => {
-        this.submitSelection(profileRes.userInfo.nickName, phoneCode)
-      },
-      fail: () => {
-        wx.showToast({ title: '需要授权用户信息', icon: 'none' })
-      }
-    })
+    this.setData({ showConfirm: false })
+    this.submitSelection(phoneCode)
   },
 
   // 提交选择到后端
-  submitSelection(nickname, phoneCode) {
+  submitSelection(phoneCode) {
     wx.showLoading({ title: '提交中...' })
 
-    // 先用 phoneCode 换取手机号
+    // 用 phoneCode 换取手机号
     wx.request({
       url: `${app.globalData.baseUrl}/wx/phone`,
       method: 'POST',
@@ -90,20 +73,19 @@ Page({
         wx.request({
           url: `${app.globalData.baseUrl}/selection/${app.globalData.openid}`,
           success: (selRes) => {
-            if (selRes.data && selRes.data.id) {
-              // 已选择过，询问是否更换
+            if (selRes.data && selRes.data.openid) {
               wx.hideLoading()
               wx.showModal({
                 title: '提示',
                 content: '您已经选择过商品，是否更换为当前选择？',
                 success: (modalRes) => {
                   if (modalRes.confirm) {
-                    this.doSubmit(nickname, phoneRes.data.phone)
+                    this.doSubmit(phoneRes.data.phone)
                   }
                 }
               })
             } else {
-              this.doSubmit(nickname, phoneRes.data.phone)
+              this.doSubmit(phoneRes.data.phone)
             }
           }
         })
@@ -116,14 +98,14 @@ Page({
   },
 
   // 执行提交
-  doSubmit(nickname, phone) {
+  doSubmit(phone) {
     wx.showLoading({ title: '提交中...' })
     wx.request({
       url: `${app.globalData.baseUrl}/selection`,
       method: 'POST',
       data: {
         openid: app.globalData.openid,
-        nickname: nickname,
+        nickname: '',
         phone: phone,
         product_id: this.data.selectedProduct.id
       },

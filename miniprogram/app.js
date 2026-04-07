@@ -1,5 +1,5 @@
 const envConfig = {
-  develop: { api: 'http://127.0.0.1:8001/metlife/api', static: 'http://127.0.0.1:8001/metlife/static' },
+  develop: { api: 'http://127.0.0.1:8002/metlife/api', static: 'http://127.0.0.1:8002/metlife/static' },
   trial: { api: 'https://bce.kkmsee.com/metlife/api', static: 'https://bce.kkmsee.com/metlife/static' },
   release: { api: 'https://bce.kkmsee.com/metlife/api', static: 'https://bce.kkmsee.com/metlife/static' },
 }
