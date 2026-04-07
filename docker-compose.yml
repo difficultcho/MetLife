@@ -1,6 +1,6 @@
 services:
   server:
-    build: ./server
+    image: metlife-server:latest
     container_name: metlife-server
     restart: unless-stopped
     ports:
