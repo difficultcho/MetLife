@@ -16,20 +16,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to server
+      - name: Upload files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: bce.kkmsee.com
+          username: ${{ secrets.CVM_USERNAME }}
+          key: ${{ secrets.CVM_SSH_KEY }}
+          source: "server/,docker-compose.yml"
+          target: /opt/metlife
+
+      - name: Build and restart
         uses: appleboy/ssh-action@v1
         with:
           host: bce.kkmsee.com
           username: ${{ secrets.CVM_USERNAME }}
           key: ${{ secrets.CVM_SSH_KEY }}
           script: |
-            # 首次部署：clone 仓库
-            if [ ! -d /opt/metlife/.git ]; then
-              git clone https://github.com/difficultcho/MetLife.git /opt/metlife
-            fi
-
             cd /opt/metlife
-            git pull origin main
 
             # 首次部署：创建 .env
             if [ ! -f server/.env ]; then
@@ -37,6 +40,5 @@ jobs:
               echo "⚠️ 请手动编辑 /opt/metlife/server/.env 填入实际配置"
             fi
 
-            # 构建并启动
             docker compose up -d --build server
             docker image prune -f
