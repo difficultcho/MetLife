@@ -7,13 +7,11 @@ Page({
     selectedProduct: null,  // 当前点击的商品
     showConfirm: false,     // 确认弹窗
     bgUrl: '',
-    footerImgUrl: '',
   },
 
   onLoad() {
     this.setData({
       bgUrl: '/images/bg.png',
-      footerImgUrl: '/images/messi.jpg',
     })
     this.fetchProducts()
   },

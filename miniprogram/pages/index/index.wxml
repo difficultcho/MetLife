@@ -24,11 +24,6 @@
     </view>
   </view>
 
-  <!-- 底部配图 -->
-  <view wx:if="{{!loading}}" class="footer-img-wrap">
-    <image class="footer-img" src="{{footerImgUrl}}" mode="widthFix" />
-  </view>
-
   <!-- 确认选择弹窗 -->
   <view class="modal-mask" wx:if="{{showConfirm}}" bindtap="onCancelConfirm">
     <view class="modal-content" catchtap>
