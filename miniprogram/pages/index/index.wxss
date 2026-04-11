@@ -1,5 +1,26 @@
 .page {
   padding: 20rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+/* 顶部气氛标语 */
+.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30rpx 20rpx 24rpx;
+}
+
+.banner-text {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #d81e06;
+  letter-spacing: 4rpx;
+  text-shadow: 0 2rpx 6rpx rgba(255, 255, 255, 0.8), 0 0 12rpx rgba(255, 220, 120, 0.6);
 }
 
 .loading {
@@ -40,6 +61,20 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* 底部配图 */
+.footer-img-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 20rpx;
+  padding: 0 20rpx 30rpx;
+}
+
+.footer-img {
+  width: 100%;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.12);
 }
 
 /* 弹窗遮罩 */

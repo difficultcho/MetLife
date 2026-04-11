@@ -1,5 +1,10 @@
 <!--index.wxml-->
-<view class="page">
+<view class="page" style="background-image: url({{bgUrl}});">
+  <!-- 顶部气氛标语 -->
+  <view class="banner">
+    <text class="banner-text">世界杯精彩好礼等你拿</text>
+  </view>
+
   <!-- 加载中 -->
   <view wx:if="{{loading}}" class="loading">
     <text>加载中...</text>
@@ -17,6 +22,11 @@
       <image class="product-image" src="{{item.image_url}}" mode="aspectFill" />
       <view class="product-name">{{item.name}}</view>
     </view>
+  </view>
+
+  <!-- 底部配图 -->
+  <view wx:if="{{!loading}}" class="footer-img-wrap">
+    <image class="footer-img" src="{{footerImgUrl}}" mode="widthFix" />
   </view>
 
   <!-- 确认选择弹窗 -->

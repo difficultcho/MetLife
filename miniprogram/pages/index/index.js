@@ -6,9 +6,15 @@ Page({
     loading: true,
     selectedProduct: null,  // 当前点击的商品
     showConfirm: false,     // 确认弹窗
+    bgUrl: '',
+    footerImgUrl: '',
   },
 
   onLoad() {
+    this.setData({
+      bgUrl: '/images/bg.png',
+      footerImgUrl: '/images/messi.jpg',
+    })
     this.fetchProducts()
   },
 
@@ -19,7 +25,7 @@ Page({
       success: (res) => {
         const products = res.data.map(p => ({
           ...p,
-          image_url: `${app.globalData.staticUrl}/${p.image}`
+          image_url: `/images/${p.image}`
         }))
         this.setData({ products, loading: false })
       },
