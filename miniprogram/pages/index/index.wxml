@@ -1,5 +1,8 @@
 <!--index.wxml-->
-<view class="page" style="background-image: url({{bgUrl}});">
+<view class="page">
+  <!-- 背景图 -->
+  <image class="bg-image" src="{{bgUrl}}" mode="aspectFill" />
+
   <!-- 顶部气氛标语 -->
   <view class="banner">
     <text class="banner-text">世界杯精彩好礼等你拿</text>
