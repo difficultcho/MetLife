@@ -7,13 +7,25 @@ Page({
     selectedProduct: null,  // 当前点击的商品
     showConfirm: false,     // 确认弹窗
     bgUrl: '',
+    bannerText: '',
   },
 
   onLoad() {
-    this.setData({
-      bgUrl: '/images/bg.png',
-    })
+    this.fetchConfig()
     this.fetchProducts()
+  },
+
+  // 获取页面配置（背景图、标语）
+  fetchConfig() {
+    wx.request({
+      url: `${app.globalData.baseUrl}/config`,
+      success: (res) => {
+        this.setData({
+          bgUrl: `${app.globalData.staticUrl}/${res.data.bg_image}`,
+          bannerText: res.data.banner_text,
+        })
+      }
+    })
   },
 
   // 获取商品列表
@@ -23,7 +35,7 @@ Page({
       success: (res) => {
         const products = res.data.map(p => ({
           ...p,
-          image_url: `/images/${p.image}`
+          image_url: `${app.globalData.staticUrl}/${p.image}`
         }))
         this.setData({ products, loading: false })
       },
@@ -111,7 +123,7 @@ Page({
         openid: app.globalData.openid,
         nickname: '',
         phone: phone,
-        product_id: this.data.selectedProduct.id
+        product_code: this.data.selectedProduct.code
       },
       success: (res) => {
         wx.hideLoading()

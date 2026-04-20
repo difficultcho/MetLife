@@ -3,10 +3,11 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
-from config import API_PREFIX, STATIC_PREFIX, WX_APPID, WX_SECRET
+from config import API_PREFIX, BANNER_TEXT, BG_IMAGE, STATIC_PREFIX, WX_APPID, WX_SECRET
 from database import engine, get_db, Base
 from models import Product, User, UserSelection
 from schemas import (
+    PageConfigOut,
     ProductOut,
     UserSelectionIn,
     UserSelectionOut,
@@ -69,10 +70,16 @@ async def wx_get_phone(req: WxPhoneRequest):
 
 # ==================== 商品接口 ====================
 
+@app.get(f"{API_PREFIX}/config", response_model=PageConfigOut)
+def get_config():
+    """页面配置（背景图、标语等）"""
+    return PageConfigOut(bg_image=BG_IMAGE, banner_text=BANNER_TEXT)
+
+
 @app.get(f"{API_PREFIX}/products", response_model=list[ProductOut])
 def get_products(db: Session = Depends(get_db)):
-    """获取所有商品列表"""
-    products = db.query(Product).all()
+    """获取所有商品列表（按 sort_order 升序）"""
+    products = db.query(Product).order_by(Product.sort_order.asc(), Product.id.asc()).all()
     result = []
     for p in products:
         out = ProductOut.model_validate(p)
@@ -86,17 +93,17 @@ def get_products(db: Session = Depends(get_db)):
 @app.get(f"{API_PREFIX}/selection/{{openid}}", response_model=UserSelectionOut | None)
 def get_selection(openid: str, db: Session = Depends(get_db)):
     """查询用户是否已选择过商品"""
+    selection = db.query(UserSelection).filter(UserSelection.openid == openid).first()
+    if not selection:
+        return None
     user = db.query(User).filter(User.openid == openid).first()
     if not user:
-        return None
-    selection = db.query(UserSelection).filter(UserSelection.user_id == user.id).first()
-    if not selection:
         return None
     return UserSelectionOut(
         openid=user.openid,
         nickname=user.nickname,
         phone=user.phone,
-        product_id=selection.product_id,
+        product_code=selection.product_code,
     )
 
 
@@ -104,7 +111,7 @@ def get_selection(openid: str, db: Session = Depends(get_db)):
 def submit_selection(data: UserSelectionIn, db: Session = Depends(get_db)):
     """提交或更新用户商品选择"""
     # 检查商品是否存在
-    product = db.query(Product).filter(Product.id == data.product_id).first()
+    product = db.query(Product).filter(Product.code == data.product_code).first()
     if not product:
         raise HTTPException(status_code=404, detail="商品不存在")
 
@@ -116,16 +123,15 @@ def submit_selection(data: UserSelectionIn, db: Session = Depends(get_db)):
     else:
         user = User(openid=data.openid, nickname=data.nickname, phone=data.phone)
         db.add(user)
-        db.flush()
 
     # 查找或创建选择记录
-    selection = db.query(UserSelection).filter(UserSelection.user_id == user.id).first()
+    selection = db.query(UserSelection).filter(UserSelection.openid == data.openid).first()
     if selection:
-        selection.product_id = data.product_id
+        selection.product_code = data.product_code
         db.commit()
         return MessageResponse(message="已更新您的商品选择")
 
-    selection = UserSelection(user_id=user.id, product_id=data.product_id)
+    selection = UserSelection(openid=data.openid, product_code=data.product_code)
     db.add(selection)
     db.commit()
     return MessageResponse(message="提交成功，感谢您的参与！")

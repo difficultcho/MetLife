@@ -1,7 +1,8 @@
+const CDN = 'http://kkmsee-com-idvrdnu.kkmsee.com/metlife'
 const envConfig = {
   develop: { api: 'http://127.0.0.1:8002/metlife/api', static: 'http://127.0.0.1:8002/metlife/static' },
-  trial: { api: 'https://bce.kkmsee.com/metlife/api', static: 'https://bce.kkmsee.com/metlife/static' },
-  release: { api: 'https://bce.kkmsee.com/metlife/api', static: 'https://bce.kkmsee.com/metlife/static' },
+  trial: { api: 'https://bce.kkmsee.com/metlife/api', static: CDN },
+  release: { api: 'https://bce.kkmsee.com/metlife/api', static: CDN },
 }
 const env = envConfig[__wxConfig.envVersion] || envConfig.release
 

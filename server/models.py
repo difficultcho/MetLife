@@ -7,9 +7,11 @@ class Product(Base):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    code = Column(String(64), unique=True, nullable=False, comment="商品唯一编码")
     name = Column(String(100), nullable=False, comment="商品名称")
     image = Column(String(255), nullable=False, comment="商品图片文件名")
     description = Column(Text, nullable=True, comment="商品描述")
+    sort_order = Column(Integer, nullable=False, default=0, comment="排序（升序）")
     created_at = Column(DateTime, server_default=func.now())
 
 
@@ -28,7 +30,7 @@ class UserSelection(Base):
     __tablename__ = "user_selections"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, nullable=False, comment="用户ID")
-    product_id = Column(Integer, nullable=False, comment="选择的商品ID")
+    openid = Column(String(64), unique=True, nullable=False, index=True, comment="微信用户openid")
+    product_code = Column(String(64), nullable=False, index=True, comment="商品唯一编码")
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())

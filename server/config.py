@@ -16,3 +16,7 @@ WX_SECRET = os.getenv("WX_SECRET", "")
 
 API_PREFIX = os.getenv("API_PREFIX", "")
 STATIC_PREFIX = os.getenv("STATIC_PREFIX", "/static")
+
+# 页面配置（发版常量，变更需重启服务）
+BG_IMAGE = "bg.png"
+BANNER_TEXT = "世界杯精彩好礼等你拿"

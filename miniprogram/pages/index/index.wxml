@@ -5,7 +5,7 @@
 
   <!-- 顶部气氛标语 -->
   <view class="banner">
-    <text class="banner-text">世界杯精彩好礼等你拿</text>
+    <text class="banner-text">{{bannerText}}</text>
   </view>
 
   <!-- 加载中 -->
